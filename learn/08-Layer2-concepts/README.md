@@ -410,4 +410,101 @@ In a professional environment (Offensive Security mindset):
 2. **Static Configuration:** Always use `switchport mode trunk` and `switchport nonegotiate` on switch-to-switch links.
 3. **Access Ports:** On ports connected to end-devices (PCs, Laptops), use `switchport mode access` and disable DTP.
 
+---
+---
+---
+
+## 📖 Part 5 — VLAN Management: Allowed VLANs & VTP
+
+### 📝 Summary:
+VLAN management involves controlling which VLANs can cross a trunk link and automating VLAN creation across multiple switches. 
+- **Allowed VLANs:** A security and performance feature to restrict specific VLANs from traversing a trunk.
+- **VTP (VLAN Trunking Protocol):** A Cisco proprietary protocol that synchronizes the VLAN database (vlan.dat) across all switches in a VTP domain.
+
+### 🎯 Objectives:
+- Learn how to prune VLANs manually using the Allowed list.
+- Understand VTP modes (Server, Client, Transparent).
+- Understand the dangers of the VTP Revision Number.
+- Learn how to reset a switch's VLAN database before adding it to a network.
+
+### 🧩 Topology:
+A Core Switch (VTP Server) connected to multiple Access Switches (VTP Clients) via Trunk links.
+
+
+### 🛠️ Step-by-Step:
+
+#### 1. Restricting VLANs on a Trunk (Allowed List)
+By default, a trunk link allows **all** VLANs (1-4094). To improve security and reduce unnecessary broadcast traffic, we manually specify which VLANs are allowed.
+
+backtick cisco
+Switch(config)# interface gig0/1
+Switch(config-if)# switchport trunk allowed vlan 10,20,30
+backtick
+
+**Pro Tip:** If you want to add a VLAN later without removing the existing ones, use:
+`switchport trunk allowed vlan add 40`
+
+
+#### 2. VTP (VLAN Trunking Protocol) Concepts
+VTP allows you to create a VLAN on one switch (Server) and have it propagate to all other switches automatically.
+
+**VTP Modes:**
+- **Server (Default):** Can create, modify, and delete VLANs. Sends advertisements.
+- **Client:** Cannot change VLANs. It listens to advertisements and updates its database.
+- **Transparent:** Does not synchronize its database with the server. It only forwards VTP advertisements to other switches. Useful when you want a switch to have its own unique local VLANs.
+
+**VTP Configuration:**
+backtick cisco
+Switch(config)# vtp domain CiscoLab
+Switch(config)# vtp password P@ssw0rd
+Switch(config)# vtp mode server  (or client/transparent)
+Switch(config)# vtp version 2
+backtick
+
+
+#### 3. The Revision Number (The "Switch Killer")
+Every time the VLAN database changes on a Server, the **Configuration Revision Number** increases by 1.
+- If a switch receives a VTP advertisement with a **higher** Revision Number, it immediately overwrites its own `vlan.dat` file.
+- **The Danger:** If you plug in an old "Server" switch from a warehouse that has a Revision Number of 100 into a fresh network with Revision 10, the old switch will **wipe out** all VLANs in the entire network.
+
+
+#### 4. VTP Pruning
+VTP Pruning increases available bandwidth by restricting flooded traffic (broadcast/unknown unicast) to those trunk links that the traffic must use to reach the destination devices.
+
+backtick cisco
+Switch(config)# vtp pruning
+backtick
+
+
+#### 5. Clearing the Database (Decommissioning a Switch)
+Before adding an old switch to your network, you **must** wipe its configuration and VLAN database to reset the Revision Number to 0.
+
+backtick cisco
+Switch# erase startup-config
+Switch# delete flash:vlan.dat
+Switch# reload
+backtick
+
+### ✅ Verification:
+
+**To check VTP status, Revision Number, and Domain:**
+backtick cisco
+Switch# show vtp status
+backtick
+
+**To see the configured VTP password:**
+backtick cisco
+Switch# show vtp password
+backtick
+
+**To verify which VLANs are actually crossing the trunk:**
+backtick cisco
+Switch# show interfaces trunk
+backtick
+
+### ⚠️ Note:
+
+1. **VTP Version 3:** Unlike versions 1 and 2, version 3 allows better password encryption and supports Extended VLANs (above 1005).
+2. **Security Risk:** VTP is generally discouraged in modern high-security networks because it is easy to accidentally wipe out all VLANs. Many engineers prefer **VTP Mode Off** or **Transparent**.
+3. **Synchronization:** VTP only works over **Trunk** links. It will not synchronize over Access links.
 
