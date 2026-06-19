@@ -436,10 +436,10 @@ A Core Switch (VTP Server) connected to multiple Access Switches (VTP Clients) v
 #### 1. Restricting VLANs on a Trunk (Allowed List)
 By default, a trunk link allows **all** VLANs (1-4094). To improve security and reduce unnecessary broadcast traffic, we manually specify which VLANs are allowed.
 
-backtick cisco
+```cisco
 Switch(config)# interface gig0/1
 Switch(config-if)# switchport trunk allowed vlan 10,20,30
-backtick
+```
 
 **Pro Tip:** If you want to add a VLAN later without removing the existing ones, use:
 `switchport trunk allowed vlan add 40`
@@ -454,12 +454,12 @@ VTP allows you to create a VLAN on one switch (Server) and have it propagate to 
 - **Transparent:** Does not synchronize its database with the server. It only forwards VTP advertisements to other switches. Useful when you want a switch to have its own unique local VLANs.
 
 **VTP Configuration:**
-backtick cisco
+```cisco
 Switch(config)# vtp domain CiscoLab
 Switch(config)# vtp password P@ssw0rd
 Switch(config)# vtp mode server  (or client/transparent)
 Switch(config)# vtp version 2
-backtick
+```
 
 
 #### 3. The Revision Number (The "Switch Killer")
@@ -471,36 +471,36 @@ Every time the VLAN database changes on a Server, the **Configuration Revision N
 #### 4. VTP Pruning
 VTP Pruning increases available bandwidth by restricting flooded traffic (broadcast/unknown unicast) to those trunk links that the traffic must use to reach the destination devices.
 
-backtick cisco
+```cisco
 Switch(config)# vtp pruning
-backtick
+```
 
 
 #### 5. Clearing the Database (Decommissioning a Switch)
 Before adding an old switch to your network, you **must** wipe its configuration and VLAN database to reset the Revision Number to 0.
 
-backtick cisco
+```cisco
 Switch# erase startup-config
 Switch# delete flash:vlan.dat
 Switch# reload
-backtick
+```
 
 ### ✅ Verification:
 
 **To check VTP status, Revision Number, and Domain:**
-backtick cisco
+```cisco
 Switch# show vtp status
-backtick
+```
 
 **To see the configured VTP password:**
-backtick cisco
+```cisco
 Switch# show vtp password
-backtick
+```
 
 **To verify which VLANs are actually crossing the trunk:**
-backtick cisco
+```cisco
 Switch# show interfaces trunk
-backtick
+```
 
 ### ⚠️ Note:
 
