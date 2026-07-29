@@ -7,7 +7,7 @@ All credentials, IPs, and keys in this lab are for learning purposes only. Do no
 ### 🧩 Topology
 
 <p align="center">
-  <img src="https://github.com/zedparsa/CCNA/blob/main/labs/port%20security/portSecurity.png?raw=true" alt="Port Security Topology" />
+  <img src="https://github.com/zedparsa/ccna-notes/blob/main/labs/03-port-security/port-security.png" alt="Port Security Topology" />
 </p>
 
 - 1x Router: `R1`
