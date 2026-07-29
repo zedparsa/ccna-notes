@@ -156,7 +156,6 @@ Router(config-subif)# encapsulation dot1Q 20
 Router(config-subif)# ip address 192.168.20.1 255.255.255.0
 backtick
 
-#### Command Table
 
 | Command | Where | Purpose |
 |---|---|---|
