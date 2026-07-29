@@ -87,10 +87,6 @@ Switch(config-vlan)# name NATIVE
 |---|---|---|
 | `vlan 10` | Switch IOS global configuration | Creates VLAN 10 |
 | `name HR` | Switch IOS VLAN configuration | Assigns the name HR to VLAN 10 |
-| `vlan 20` | Switch IOS global configuration | Creates VLAN 20 |
-| `name IT` | Switch IOS VLAN configuration | Assigns the name IT to VLAN 20 |
-| `vlan 999` | Switch IOS global configuration | Creates VLAN 999 |
-| `name NATIVE` | Switch IOS VLAN configuration | Assigns the name NATIVE to VLAN 999 |
 
 #### 4. Assign Access Ports to VLANs
 
@@ -109,8 +105,6 @@ Switch(config-if)# switchport access vlan 20
 | `interface fa0/1` | Switch IOS global configuration | Enters interface configuration mode for Fa0/1 |
 | `switchport mode access` | Switch IOS interface configuration | Forces the port to operate as an access port |
 | `switchport access vlan 10` | Switch IOS interface configuration | Assigns the port to VLAN 10 |
-| `interface fa0/2` | Switch IOS global configuration | Enters interface configuration mode for Fa0/2 |
-| `switchport access vlan 20` | Switch IOS interface configuration | Assigns the port to VLAN 20 |
 
 #### 5. Configure the Switch Port Connected to the Router as a Trunk
 
@@ -190,7 +184,13 @@ Router(config-subif)# encapsulation dot1Q 999 native
 
 ## Method 2 — SVI (Switch Virtual Interface)
 
-#### 10. SVI Concept
+---
+---
+---
+
+## 📖 Part 2 — SVI
+
+#### 10. Concept
 
 SVI stands for **Switch Virtual Interface**.
 
@@ -220,8 +220,6 @@ Switch(config-vlan)# name IT
 |---|---|---|
 | `vlan 10` | Layer 3 Switch IOS global configuration | Creates VLAN 10 |
 | `name HR` | Layer 3 Switch IOS VLAN configuration | Assigns the name HR to VLAN 10 |
-| `vlan 20` | Layer 3 Switch IOS global configuration | Creates VLAN 20 |
-| `name IT` | Layer 3 Switch IOS VLAN configuration | Assigns the name IT to VLAN 20 |
 
 
 #### 12. Create SVIs for Each VLAN
@@ -273,9 +271,6 @@ Switch(config-if)# switchport access vlan 20
 | `interface fa0/1` | Layer 3 Switch IOS global configuration | Enters interface configuration mode for Fa0/1 |
 | `switchport mode access` | Layer 3 Switch IOS interface configuration | Forces the port to operate as an access port |
 | `switchport access vlan 10` | Layer 3 Switch IOS interface configuration | Assigns Fa0/1 to VLAN 10 |
-| `interface fa0/2` | Layer 3 Switch IOS global configuration | Enters interface configuration mode for Fa0/2 |
-| `switchport access vlan 20` | Layer 3 Switch IOS interface configuration | Assigns Fa0/2 to VLAN 20 |
-
 
 ### ✅ Verification:
 
