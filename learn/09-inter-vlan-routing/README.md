@@ -49,8 +49,6 @@ To allow communication between VLANs, we need a Layer 3 device such as:
 - A router
 - A Layer 3 switch
 
-## Method 1 — ROAS (Router-on-a-Stick)
-
 #### 2. Concept
 
 ROAS stands for **Router-on-a-Stick**.
