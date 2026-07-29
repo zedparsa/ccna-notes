@@ -6,7 +6,10 @@ This repository contains the documentation and configuration for a foundational 
 The primary objective was to move beyond basic connectivity and implement a production-like hardened Layer 2 infrastructure. This lab served as a critical prerequisite for my upcoming research project on **Intrusion Detection Systems (IDS)** by establishing a segmented environment with strict VLAN controls.
 
 ## Topology
-![Network Topology](topology/VLAN.PNG)
+<p align="center">
+  <img src="https://github.com/zedparsa/ccna-notes/blob/main/labs/08-layer2-concepts/VLAN.PNG" alt="Port Security Topology" />
+</p>
+
 
 ### Design Specifications
 - **Architecture**: Collapsed Core (1 Distribution Switch + 3 Access Switches).
