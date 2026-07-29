@@ -182,7 +182,6 @@ Router(config-subif)# encapsulation dot1Q 999 native
 | `interface gig0/0/0.999` | Router IOS global configuration | Creates a subinterface for the native VLAN |
 | `encapsulation dot1Q 999 native` | Router IOS subinterface configuration | Tells the router that VLAN 999 is the native VLAN and should be treated as untagged traffic |
 
-## Method 2 — SVI (Switch Virtual Interface)
 
 ---
 ---
