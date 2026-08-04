@@ -1,5 +1,3 @@
-## 📖 Part 7 — FHRP & HSRP (First Hop Redundancy Protocol)
-
 ### 📝 Summary:
 In a high-availability network, the **Default Gateway** is a single point of failure. If the router acting as the gateway fails, all hosts lose connectivity to external networks.  
 **FHRP (First Hop Redundancy Protocol)** solves this by allowing multiple routers to act as a single **Virtual Router**.
@@ -20,8 +18,6 @@ Two Multilayer Switches (DSW1 and DSW2) or Routers acting as gateways for VLAN 1
 - **DSW1:** Active (Priority 110)  
 - **DSW2:** Standby (Priority 100)
 
----
-
 ### 🛠️ Step-by-Step:
 
 #### 1. FHRP Protocols Overview
@@ -32,7 +28,6 @@ Two Multilayer Switches (DSW1 and DSW2) or Routers acting as gateways for VLAN 1
 | **VRRP** | Open Standard | 1 Master, Others Backup. Similar to HSRP. |
 | **GLBP** | Cisco | Load balances traffic across up to 4 routers simultaneously. |
 
----
 
 #### 2. How HSRP Works (VIP & VMAC)
 Instead of pointing hosts to a physical router's IP, we point them to a **Virtual IP (VIP)**.  
@@ -40,100 +35,84 @@ The routers in the HSRP group also share a **Virtual MAC address**:
 - **HSRP v1:** `0000.0c07.acXX` (where XX is the group ID in hex)
 - **HSRP v2:** `0000.0c9f.fXXX` (where XXX is the group ID in hex)
 
----
 
 #### 3. Basic HSRP Configuration
 You must configure the same Group Number and Virtual IP on both routers.
 
-backtick cisco
+```cisco
 Router(config)# interface vlan 10
 Router(config-if)# standby 10 ip 192.168.10.254
 Router(config-if)# standby 10 version 2
-backtick
+```
 
-#### Command Table
 | Command | Where | Purpose |
 |---|---|---|
 | `standby <group> ip <vip>` | Interface Mode | Activates HSRP and sets the Virtual IP address |
 | `standby version 2` | Interface Mode | Enables HSRP version 2 (supports more groups and IPv6) |
 
----
-
 #### 4. Influencing Election (Priority & Preempt)
 By default, the router with the **higher IP** becomes Active. However, we usually use **Priority** (Default: 100, Range: 0-255).  
 **Preempt:** If a higher-priority router reboots and comes back online, it will **not** take back the Active role unless `preempt` is configured.
 
-backtick cisco
+```cisco
 Router(config-if)# standby 10 priority 110
 Router(config-if)# standby 10 preempt
-backtick
+```
 
-#### Command Table
 | Command | Where | Purpose |
 |---|---|---|
 | `standby <group> priority <val>` | Interface Mode | Sets priority (higher value wins the Active role) |
 | `standby <group> preempt` | Interface Mode | Allows a higher-priority router to take over the Active role |
 
----
-
 #### 5. Optimization (Timers)
 The default Hello time is 3 seconds, and Hold time is 10 seconds. You can speed up the failover process:
 
-backtick cisco
+```cisco
 Router(config-if)# standby 10 timers 1 3
-backtick
+```
 
-#### Command Table
 | Command | Where | Purpose |
 |---|---|---|
 | `standby <group> timers <h> <ht>` | Interface Mode | Sets Hello and Hold timers (in seconds or milliseconds) |
 
----
 
 #### 6. HSRP Security (Authentication)
 To prevent an attacker from introducing a fake high-priority router into the network (MITM attack), use authentication.
 
-backtick cisco
+```cisco
 Router(config-if)# standby 10 authentication md5 key-string P@ssw0rd123
-backtick
+```
 
-#### Command Table
 | Command | Where | Purpose |
 |---|---|---|
 | `standby <group> authentication <key>` | Interface Mode | Sets a password for HSRP packets (prevents rogue HSRP neighbors) |
 
----
 
 #### 7. Load Sharing with HSRP (MHSRP)
 HSRP doesn't load balance by default, but you can achieve "Manual Load Balancing" by making Router A active for VLAN 10 and Router B active for VLAN 20.
 
----
-
 ### ✅ Verification:
 
 **1. Check HSRP Status (Detailed):**
-backtick cisco
+```cisco
 Router# show standby
-backtick
+```
 
 **2. Check HSRP Status (Summary):**
-backtick cisco
+```cisco
 Router# show standby brief
-backtick
+```
 
 **3. Check Interface IP Status:**
-backtick cisco
+```cisco
 Router# show ip interface brief | exclude unassigned
-backtick
+```
 
-#### Command Table
 | Command | Where | Purpose |
 |---|---|---|
 | `show standby` | Privileged EXEC | Shows detailed HSRP state, timers, and Virtual MAC |
 | `show standby brief` | Privileged EXEC | Displays a summary table of Active/Standby states |
 | `show ip interface brief` | Privileged EXEC | Verifies IP addresses and interface status |
-
----
 
 ### ⚠️ Note:
 
