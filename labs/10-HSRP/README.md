@@ -1,4 +1,4 @@
-## Overview
+### Overview
 This repository contains the documentation and configuration for a **secure campus gateway redundancy** lab built around **HSRP (Hot Standby Router Protocol)**.  
 The purpose of this project was to design and validate a highly available default-gateway architecture for a segmented campus LAN, where each VLAN has a resilient first-hop gateway with automatic failover.
 
@@ -8,28 +8,28 @@ This lab was completed as part of my CCNA networking practice to strengthen my u
 - VLAN-aware Layer 2/Layer 3 integration
 - STP interaction with redundant gateway paths
 
-## Topology
+### Topology
 <p align="center">
   <img src="https://github.com/zedparsa/ccna-notes/blob/main/labs/10-HSRP/hsrp.PNG" alt="HSRP Topology" />
 </p>
 
-### Design Specifications
+#### Design Specifications
 - **Architecture**: Two Distribution Switches (Layer 3) providing redundant gateways for a centralized Access Switch.
 - **Segmentation**: Dual VLAN environment (VLAN 10 and VLAN 20).
 - **Gateway Redundancy**: HSRP (Hot Standby Router Protocol) implemented for high availability.
 - **Load Sharing**: Optimized gateway distribution (DS1 active for VLAN 10, DS2 active for VLAN 20).
 - **Layer 2 Transport**: IEEE 802.1Q Trunking across all switch-to-switch links.
 
-## VLAN & HSRP Mapping
+### VLAN & HSRP Mapping
 | VLAN | Name | Subnet | Virtual IP (Gateway) | Active Node | Standby Node |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | 10 | Users_A | 192.168.10.0/24 | 192.168.10.254 | DS1 | DS2 |
 | 20 | Users_B | 192.168.20.0/24 | 192.168.20.254 | DS2 | DS1 |
 
 
-## Configuration Highlights
+### Configuration Highlights
 
-### 1. HSRP Core Logic (Example: VLAN 10 on DS1)
+#### 1. HSRP Core Logic (Example: VLAN 10 on DS1)
 ```cisco
 interface Vlan10
  ip address 192.168.10.1 255.255.255.0
@@ -39,7 +39,7 @@ interface Vlan10
  standby 10 preempt
 ```
 
-### 2. Trunking & Encapsulation
+#### 2. Trunking & Encapsulation
 To ensure VLAN propagation, all inter-switch links were manually configured as trunks.
 ```cisco
 interface GigabitEthernet0/1
@@ -48,13 +48,13 @@ interface GigabitEthernet0/1
  switchport trunk allowed vlan 10,20
 ```
 
-### 3. Layer 3 Routing
+#### 3. Layer 3 Routing
 Explicitly enabled on Distribution switches to allow Inter-VLAN communication.
 ```cisco
 ip routing
 ```
 
-## Troubleshooting & Learnings (Key Takeaways)
+### Troubleshooting & Learnings (Key Takeaways)
 
 1. **HSRP Dependency on Layer 2**: Confirmed that HSRP failover depends entirely on stable Layer 2 trunking. If a VLAN is missing from a trunk, the HSRP nodes will fail to see each other (Duplicate Active state).
 2. **Virtual IP vs. Physical SVI**: Learned that hosts must point *only* to the HSRP Virtual IP (VIP). Pointing to a physical SVI IP bypasses the redundancy mechanism.
