@@ -1,4 +1,4 @@
-### Overview
+## Overview
 This repository contains the documentation and configuration for a **secure campus gateway redundancy** lab built around **HSRP (Hot Standby Router Protocol)**.  
 The purpose of this project was to design and validate a highly available default-gateway architecture for a segmented campus LAN, where each VLAN has a resilient first-hop gateway with automatic failover.
 
@@ -8,7 +8,7 @@ This lab was completed as part of my CCNA networking practice to strengthen my u
 - VLAN-aware Layer 2/Layer 3 integration
 - STP interaction with redundant gateway paths
 
-### Topology
+## Topology
 <p align="center">
   <img src="https://github.com/zedparsa/ccna-notes/blob/main/labs/10-HSRP/hsrp.PNG" alt="HSRP Topology" />
 </p>
