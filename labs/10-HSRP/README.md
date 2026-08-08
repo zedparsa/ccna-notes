@@ -14,7 +14,7 @@ This lab was completed as part of my CCNA networking practice to strengthen my u
 
 ## Topology
 <p align="center">
-  <img src="https://github.com/zedparsa/ccna-notes/blob/main/labs/09-hsrp-redundancy/topology.PNG" alt="HSRP Topology" />
+  <img src="https://github.com/zedparsa/ccna-notes/blob/main/labs/10-HSRP/hsrp.PNG" alt="HSRP Topology" />
 </p>
 
 ### Design Specifications
