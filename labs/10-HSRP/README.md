@@ -61,14 +61,14 @@ ip routing
 3. **STP and Path Selection**: Observed how Spanning Tree Protocol (STP) blocks redundant links to prevent loops. Realized that for optimal performance, the STP Root Bridge should be aligned with the HSRP Active gateway for a specific VLAN.
 4. **Encapsulation Conflict**: Resolved the "Trunk encapsulation Auto" error by explicitly defining `dot1q` before forcing trunk mode on multilayer switches.
 
-## Verification Commands
+### Verification Commands
 Used for validating HSRP states and path redundancy:
 - `show standby brief` (To verify Active/Standby roles)
 - `show ip interface brief` (To verify SVI status)
 - `show interfaces trunk` (To ensure VLANs 10 and 20 are allowed)
 - `show spanning-tree vlan <id>` (To identify root ports and blocked paths)
 
-## Repository Structure
+### Repository Structure
 - `/configs/`: Running configurations for DS1, DS2, and AS1.
 - `/packet-tracer/`: Original `.pkt` simulation file.
 - `/verification/`: Logs of HSRP failover tests and connectivity status.
